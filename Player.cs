@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Linq;
 
 namespace Monopoly
 {
-    public class Player
+    public class Player : IPlayer
     {
         private int currentPosition;
         public int RoundsPlayed { get; private set; }
-        private IRandomNumberGenerator Generator { get; }
+        public IRandomNumberGenerator Generator { get; }
 
         public int CurrentPosition
         {
@@ -14,7 +15,7 @@ namespace Monopoly
             set { currentPosition = value % Board.NUMBER_OF_SPACES; }
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public Player(string name, IRandomNumberGenerator generator)
         {
@@ -24,7 +25,7 @@ namespace Monopoly
 
         public void TakeTurn()
         {
-            int rollValue = Generator.RollDice();
+            int rollValue = RollDice();
 
             CurrentPosition += rollValue;
             RoundsPlayed++;
@@ -32,11 +33,21 @@ namespace Monopoly
             PrintTurnSummary(rollValue, CurrentPosition);
         }
 
+        public int RollDie()
+        {
+            return Generator.Generate(1, MonopolyGame.NUMBER_OF_SIDES);
+        }
+
+        public int RollDice()
+        {
+            return RollDie() + RollDie();
+        }
+
         public void PrintTurnSummary(int rollValue, int newSpace)
         {
             if (MonopolyGame.Board != null)
             {
-                Console.WriteLine("On round {0}, \"{1}\" rolled a {2} moving to \"{3}\"", RoundsPlayed, Name, rollValue, MonopolyGame.Board.Spaces[CurrentPosition].Name);
+                Console.WriteLine("On round {0}, \"{1}\" rolled a {2} moving to \"{3}\"", RoundsPlayed, Name, rollValue, MonopolyGame.Board.Spaces.ElementAt(CurrentPosition).Name);
             }
         }
     }

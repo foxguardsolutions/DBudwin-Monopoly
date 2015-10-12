@@ -6,19 +6,36 @@ namespace Monopoly
 {
     public class MonopolyGame
     {
-        public List<Player> Players { get; private set; }
+        public const int MIN_PLAYERS = 2;
+        public const int MAX_PLAYERS = 8;
+        public const int NUMBER_OF_SIDES = 6;
+
+        public int RoundsToPlay { get; private set; }
+        public List<IPlayer> Players { get; private set; }
         public static Board Board { get; private set; }
 
-        public MonopolyGame(List<Player> players)
+        public MonopolyGame(string[] args)
         {
-            Board = new Board();
-
-            AddPlayers(players);
+            Setup(GeneratePlayerListFromArgs(args), ParseRoundsToPlay(args));
         }
 
-        private void AddPlayers(List<Player> players)
+        public MonopolyGame(IEnumerable<IPlayer> players, int roundsToPlay)
         {
-            if (players.Count >= 2 && players.Count <= 8)
+            Setup(players, roundsToPlay);
+        }
+
+        private void Setup(IEnumerable<IPlayer> players, int roundsToPlay)
+        {
+            RoundsToPlay = roundsToPlay;
+
+            Board = new Board();
+
+            AddPlayers(players.ToList());
+        }
+
+        private void AddPlayers(List<IPlayer> players)
+        {
+            if (players.Count >= MIN_PLAYERS && players.Count <= MAX_PLAYERS)
             {
                 Players = players;
 
@@ -40,6 +57,18 @@ namespace Monopoly
         public void PlayRound()
         {
             Players.ForEach(p => p.TakeTurn());
+        }
+
+        public IEnumerable<IPlayer> GeneratePlayerListFromArgs(string[] args)
+        {
+            IEnumerable<string> playerNames = args.Reverse().Skip(1);
+
+            return new PlayerFactory(playerNames).CreateAll(new RandomNumberGenerator());
+        }
+
+        private int ParseRoundsToPlay(string[] args)
+        {
+            return int.Parse(args.Last());
         }
     }
 }

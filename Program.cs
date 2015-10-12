@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Monopoly
 {
@@ -17,34 +16,26 @@ namespace Monopoly
             }
         }
 
-        public static void ShowUsage()
+        private static void ShowUsage()
         {
             Console.WriteLine("To play Monopoly, enter a space delimited list of at least 2 player names followed by the number of rounds to play.");
         }
 
-        public static void BeginGamePlay(string[] args)
+        private static void BeginGamePlay(string[] args)
         {
-            RandomNumberGenerator generator = new RandomNumberGenerator();
+            MonopolyGame game = new MonopolyGame(args);
 
-            List<Player> players = new List<Player>();
+            RunGame(game);
 
-            for (int i = 0; i < args.Length - 1; i++)
-            {
-                Player player = new Player(args[i], generator);
+            Console.ReadLine();
+        }
 
-                players.Add(player);
-            }
-
-            int roundsToPlay = int.Parse(args[args.Length - 1]);
-
-            MonopolyGame game = new MonopolyGame(players);
-
-            for (int i = 0; i < roundsToPlay; i++)
+        private static void RunGame(MonopolyGame game)
+        {
+            for (int i = 0; i < game.RoundsToPlay; i++)
             {
                 game.PlayRound();
             }
-
-            Console.ReadLine();
         }
     }
 }
