@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Monopoly
+﻿namespace Monopoly.Random
 {
     public class RandomNumberGenerator : IRandomNumberGenerator
     {
-        private readonly Random random = new Random();
+        private readonly System.Random random = new System.Random();
 
         public int Generate(int min, int max)
         {

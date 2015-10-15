@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Monopoly
+namespace Monopoly.Game
 {
     public interface IBoardSpacesFactory
     {

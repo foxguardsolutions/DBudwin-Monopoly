@@ -1,4 +1,6 @@
-﻿namespace Monopoly
+﻿using Monopoly.Random;
+
+namespace Monopoly.Game
 {
     public interface IPlayer
     {
@@ -6,10 +8,11 @@
         IRandomNumberGenerator Generator { get; }
         string Name { get; }
         int CurrentPosition { get; set; }
+        int PreviousPosition { get; set; }
+        int Cash { get; set; }
 
-        void TakeTurn();
+        void TakeTurn(int rollValue);
         int RollDie();
         int RollDice();
-        void PrintTurnSummary(int rollValue, int newSpace);
     }
 }

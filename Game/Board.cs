@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace Monopoly
+namespace Monopoly.Game
 {
-    public class Board
+    public class Board : IBoard
     {
         public const int NUMBER_OF_SPACES = 40;
 
         public IEnumerable<IBoardSpace> Spaces { get; }
 
-        public Board()
+        public Board(IEnumerable<IBoardSpace> spaces)
         {
-            BoardSpacesFactory factory = new BoardSpacesFactory();
-
-            Spaces = factory.CreateAll();
+            Spaces = spaces;
         }
     }
 }

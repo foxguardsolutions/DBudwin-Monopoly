@@ -1,10 +1,10 @@
-﻿namespace Monopoly
+﻿namespace Monopoly.Game.Properties
 {
     public abstract class RealEstateSpace : BoardSpace
     {
         public int Cost { get; private set; }
 
-        protected RealEstateSpace(string name, int position, int cost)
+        protected RealEstateSpace(string name, SpaceKeys position, int cost)
         {
             Name = name;
             Position = position;

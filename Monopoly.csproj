@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -7,8 +7,9 @@
     <OutputType>Exe</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>ConsoleApplication</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -21,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>monopoly.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>monopoly.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>Monopoly</RootNamespace>
@@ -42,10 +45,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
+      <HintPath>packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -60,6 +62,7 @@
     <Folder Include=".git\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Monopoly.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -68,31 +71,29 @@
     <Analyzer Include="packages\StyleCop.Analyzers.1.0.0-beta013\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionSpace.cs" />
-    <Compile Include="Board.cs" />
-    <Compile Include="BoardSpace.cs" />
-    <Compile Include="BoardSpacesFactory.cs" />
-    <Compile Include="BoardTest.cs" />
-    <Compile Include="CardSpace.cs" />
-    <Compile Include="IBoardSpace.cs" />
-    <Compile Include="IBoardSpacesFactory.cs" />
-    <Compile Include="IPlayer.cs" />
-    <Compile Include="IPlayerFactory.cs" />
-    <Compile Include="IRandomNumberGenerator.cs" />
-    <Compile Include="MonopolyGame.cs" />
-    <Compile Include="MonopolyGameTest.cs" />
-    <Compile Include="PenaltySpace.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="MonopolyBindings.cs" />
-    <Compile Include="PlayerFactory.cs" />
-    <Compile Include="PlayerTest.cs" />
+    <Compile Include="Game\Board.cs" />
+    <Compile Include="Game\BoardSpace.cs" />
+    <Compile Include="Game\BoardSpacesFactory.cs" />
+    <Compile Include="Game\IBoard.cs" />
+    <Compile Include="Game\IBoardSpace.cs" />
+    <Compile Include="Game\IBoardSpacesFactory.cs" />
+    <Compile Include="Game\IMonopolyGame.cs" />
+    <Compile Include="Game\IPlayer.cs" />
+    <Compile Include="Game\IPlayerFactory.cs" />
+    <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\PlayerFactory.cs" />
+    <Compile Include="Game\Properties\ActionSpace.cs" />
+    <Compile Include="Game\Properties\CardSpace.cs" />
+    <Compile Include="Game\Properties\PenaltySpace.cs" />
+    <Compile Include="Game\Properties\PropertySpace.cs" />
+    <Compile Include="Game\Properties\RailRoadSpace.cs" />
+    <Compile Include="Game\Properties\RealEstateSpace.cs" />
+    <Compile Include="Game\Properties\UtilitySpace.cs" />
+    <Compile Include="Game\MonopolyGame.cs" />
+    <Compile Include="Game\MonopolyBindings.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="PropertySpace.cs" />
-    <Compile Include="RailRoadSpace.cs" />
-    <Compile Include="RandomNumberGenerator.cs" />
-    <Compile Include="RandomNumberGeneratorTest.cs" />
-    <Compile Include="RealEstateSpace.cs" />
-    <Compile Include="UtilitySpace.cs" />
+    <Compile Include="Random\IRandomNumberGenerator.cs" />
+    <Compile Include="Random\RandomNumberGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
