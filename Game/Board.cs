@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Monopoly.Game
 {
@@ -11,6 +12,16 @@ namespace Monopoly.Game
         public Board(IEnumerable<IBoardSpace> spaces)
         {
             Spaces = spaces;
+        }
+
+        public IBoardSpace SpaceAt(int position)
+        {
+            return Spaces.ElementAt(position);
+        }
+
+        public IBoardSpace SpaceAt(BoardSpace.SpaceKeys position)
+        {
+            return SpaceAt((int)position);
         }
     }
 }

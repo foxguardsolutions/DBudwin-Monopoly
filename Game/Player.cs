@@ -4,8 +4,11 @@ namespace Monopoly.Game
 {
     public class Player : IPlayer
     {
+        public const int STARTING_CASH = 400;
+
         private int currentPosition;
         public int PreviousPosition { get; set; }
+        public int MostRecentRoll { get; set; }
         public int Cash { get; set; }
         public int RoundsPlayed { get; private set; }
         public IRandomNumberGenerator Generator { get; }
@@ -29,6 +32,7 @@ namespace Monopoly.Game
         {
             Name = name;
             Generator = generator;
+            Cash = STARTING_CASH;
         }
 
         public void TakeTurn(int rollValue)
@@ -44,7 +48,9 @@ namespace Monopoly.Game
 
         public int RollDice()
         {
-            return RollDie() + RollDie();
+            MostRecentRoll = RollDie() + RollDie();
+
+            return MostRecentRoll;
         }
     }
 }
