@@ -9,9 +9,8 @@ namespace Monopoly.Game
         IBoard Board { get; }
 
         void PlayRound();
-        void TakeTurn(IPlayer player, int roll);
-        void EvaluateTurnOutcome(IPlayer player);
-        void PrintTurnSummary(IPlayer player);
+        void PlayerRollEvent(IPlayer player, int roll);
+        void EvaluateRollOutcome(IPlayer player);
         void CheckPlayersCurrentSpaceAvailability(IPlayer player);
         void PurchaseCurrentSpace(IPlayer player, RealEstateSpace space);
         void PayRent(IPlayer player, RealEstateSpace space);
@@ -20,5 +19,8 @@ namespace Monopoly.Game
         int DetermineRailroadRent(RailroadSpace space);
         int DeterminePropertyRent(PropertySpace space);
         void MoveCashFromBuyerToOwner(IPlayer buyer, IPlayer owner, int rent, string spaceName);
+        void RollAgainIfDoublesRolled(IPlayer player);
+        void SendPlayerToJailForThreeDoubles(IPlayer player);
+        void GoToJail(IPlayer player);
     }
 }

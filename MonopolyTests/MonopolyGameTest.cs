@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using Monopoly.Game;
 using Monopoly.Game.Properties;
+using Monopoly.Random;
+using Moq;
 using Ninject;
 
 namespace MonopolyTests
@@ -16,6 +18,20 @@ namespace MonopolyTests
         private RailroadSpace pennsylvaniaRailroadSpace;
         private RailroadSpace boRailroadSpace;
         private RailroadSpace shortlineRailroadSpace;
+        private Mock<IRandomNumberGenerator> randMock;
+        private Player player;
+
+        [SetUp]
+        public void SetUp()
+        {
+            randMock = new Mock<IRandomNumberGenerator>();
+            player = new Player("Car", randMock.Object);
+        }
+
+        public void RollDiceMock(int die1, int die2)
+        {
+            randMock.SetupSequence(s => s.Generate(1, MonopolyGame.NUMBER_OF_SIDES)).Returns(die1).Returns(die2);
+        }
 
         public void CreateGame(string args)
         {            
@@ -77,7 +93,7 @@ namespace MonopolyTests
 
             player.TakeTurn(roll);
 
-            game.EvaluateTurnOutcome(player);
+            game.EvaluateRollOutcome(player);
 
             return player.Cash;
         }
@@ -94,7 +110,7 @@ namespace MonopolyTests
             player.Cash = cash;
             player.TakeTurn(roll);
 
-            game.EvaluateTurnOutcome(player);
+            game.EvaluateRollOutcome(player);
 
             return player.Cash;
         }
@@ -374,6 +390,90 @@ namespace MonopolyTests
 
             Assert.AreEqual(0, losingPlayer.Cash);
             Assert.AreEqual(Player.STARTING_CASH + 1, otherPlayer.Cash);
+        }
+
+        [TestCase("Car,Horse", 1)]
+        [TestCase("Car,Horse", 2)]
+        public void TestRollAgainIfDoubles(string args, int consecutiveDoublesRolled)
+        {
+            CreateGame(args);
+
+            IPlayer player = game.Players.First();
+
+            player.DoublesCounter = consecutiveDoublesRolled;
+
+            game.RollAgainIfDoublesRolled(player);
+
+            Assert.Greater(player.CurrentPosition, 0);
+            Assert.AreEqual(1, player.RoundsPlayed);
+        }
+
+        [TestCase("Car,Horse", Description = "User Story: Roll doubles 3 times in a row, never pass or land on go. Balance is unchanged. Player is in Jail.")]
+        public void TestGoToJailForTripleDoubles(string args)
+        {
+            CreateGame(args);
+
+            Mock<IPlayer> mock = new Mock<IPlayer>();
+            mock.Setup(s => s.RollDie()).Returns(2);
+
+            game.PlayerRollEvent(player, player.RollDice(mock.Object.RollDie(), mock.Object.RollDie()));
+
+            Assert.IsTrue(player.IsIncarcerated);
+        }
+
+        [TestCase("Car,Horse")]
+        public void TestLeaveJailForRollingDoubles(string args)
+        {
+            CreateGame(args);
+
+            IPlayer jailedPlayer = game.Players.Last();
+
+            game.GoToJail(jailedPlayer);
+
+            Mock<IPlayer> mock = new Mock<IPlayer>();
+            mock.Setup(s => s.RollDie()).Returns(2);
+
+            game.PlayerRollEvent(jailedPlayer, jailedPlayer.RollDice(mock.Object.RollDie(), mock.Object.RollDie()));
+
+            Assert.IsFalse(jailedPlayer.IsIncarcerated);
+        }
+
+        [TestCase("Car,Horse", 20, 10, true, Description = "User Story: Roll doubles, land on Go To Jail, player is in Jail, turn is over, balance is unchanged")]
+        [TestCase("Car,Horse", 25, 5, false, Description = "User Story: Roll doubles, land on Go To Jail, player is in Jail, turn is over, balance is unchanged")]
+        public void TestGoToJail(string args, int initialPosition, int roll, bool isRollDoubles)
+        {
+            CreateGame(args);
+
+            IPlayer jailedPlayer = game.Players.First();
+
+            int playerBalance = jailedPlayer.Cash;
+
+            jailedPlayer.CurrentPosition = initialPosition;
+
+            game.PlayerRollEvent(jailedPlayer, roll);
+
+            Assert.IsTrue(jailedPlayer.IsIncarcerated);
+            Assert.AreEqual(jailedPlayer.CurrentPosition, (int)BoardSpace.SpaceKeys.Jail);
+            Assert.AreEqual(Player.STARTING_CASH, playerBalance);
+        }
+
+        [TestCase("Car,Horse")]
+        public void TestPayToGetOutOfJail(string args)
+        {
+            CreateGame(args);
+
+            IPlayer jailedPlayer = game.Players.First();
+
+            int balance = jailedPlayer.Cash;
+
+            game.GoToJail(jailedPlayer);
+
+            jailedPlayer.RoundsInJail = 3;
+
+            game.PlayerRollEvent(jailedPlayer, 10);
+
+            Assert.AreEqual(balance - MonopolyGame.JAIL_BAIL, jailedPlayer.Cash);
+            Assert.IsFalse(jailedPlayer.IsIncarcerated);
         }
     }
 }

@@ -19,11 +19,6 @@ namespace MonopolyTests
             player = new Player("Car", randMock.Object);
         }
 
-        public void RollDiceMock(int die1, int die2)
-        {
-            randMock.SetupSequence(s => s.Generate(1, MonopolyGame.NUMBER_OF_SIDES)).Returns(die1).Returns(die2);
-        }
-
         [TestCase(2, Result = 2)]
         [TestCase(4, Result = 4)]
         [TestCase(12, Result = 12)]
@@ -46,6 +41,16 @@ namespace MonopolyTests
             return player.CurrentPosition;
         }
 
+        [TestCase(7, Result = 10, Description = "Player in jail, unsuccessful roll to leave jail")]
+        public int TestTakeTurnPlayerIncarcerated(int roll)
+        {
+            player.CurrentPosition = (int)BoardSpace.SpaceKeys.Jail;
+            player.IsIncarcerated = true;
+            player.TakeTurn(roll);
+
+            return player.CurrentPosition;
+        }
+
         [TestCase(1, Result = 1)]
         [TestCase(20, Result = 20)]
         public int TestRoundsPlayed(int roundsToPlay)
@@ -56,6 +61,15 @@ namespace MonopolyTests
             }
 
             return player.RoundsPlayed;
+        }
+
+        [TestCase(3, 3, Result = 1)]
+        [TestCase(2, 3, Result = 0)]
+        public int TestCheckForDoubles(int die1, int die2)
+        {
+            player.CheckForDoubles(die1, die2);
+
+            return player.DoublesCounter;
         }
     }
 }

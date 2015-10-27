@@ -11,6 +11,7 @@ namespace Monopoly.Game
         public const int PASS_GO_REWARD = 200;
         public const int INCOME_TAX_PENALTY = 200;
         public const int LUXURY_TAX_PENALTY = 75;
+        public const int JAIL_BAIL = 50;
 
         public IEnumerable<IPlayer> Players { get; }
         public IBoard Board { get; }
@@ -25,21 +26,83 @@ namespace Monopoly.Game
         {
             foreach (IPlayer p in Players)
             {
-                TakeTurn(p, p.RollDice());
+                PlayRoundForPlayer(p);
             }
         }
 
-        public void TakeTurn(IPlayer player, int roll)
+        private void PlayRoundForPlayer(IPlayer player)
         {
             if (player.Cash > 0)
             {
-                player.TakeTurn(roll);
-                EvaluateTurnOutcome(player);
-                PrintTurnSummary(player);
+                Console.WriteLine("On round {0} player \"{1}\"...", player.RoundsPlayed, player.Name);
+
+                PlayerRollEvent(player, player.RollDice(player.RollDie(), player.RollDie()));
             }
         }
 
-        public void EvaluateTurnOutcome(IPlayer player)
+        public void PlayerRollEvent(IPlayer player, int roll)
+        {
+            if (player.Cash <= 0)
+            {
+                return;
+            }
+
+            Console.WriteLine("    Rolled {0}", roll);
+
+            SendPlayerToJailForThreeDoubles(player);
+            LeaveJailForRollingDoubles(player);
+
+            player.TakeTurn(roll);
+
+            EvaluateRollOutcome(player);
+            RollAgainIfDoublesRolled(player);
+            PayJailBondIfInJailFor3Rounds(player, roll);
+        }
+
+        public void PayJailBondIfInJailFor3Rounds(IPlayer player, int roll)
+        {
+            if (player.RoundsInJail == 3 && player.Cash >= JAIL_BAIL)
+            {
+                Console.WriteLine("    Paid {0} to leave jail", JAIL_BAIL);
+
+                player.LeaveJail();
+                player.Cash -= 50;
+
+                PlayerRollEvent(player, roll);
+            }
+        }
+
+        public void RollAgainIfDoublesRolled(IPlayer player)
+        {
+            if (player.DoublesCounter > 0)
+            {
+                Console.WriteLine("    Rolled double {0}'s and is rolling again", player.MostRecentRoll / 2);
+
+                PlayerRollEvent(player, player.RollDice(player.RollDie(), player.RollDie()));
+            }
+        }
+
+        public void LeaveJailForRollingDoubles(IPlayer player)
+        {
+            if (player.DoublesCounter > 0 && player.IsIncarcerated)
+            {
+                Console.WriteLine("    While in jail, rolled double {0}'s and is leaving jail", player.MostRecentRoll / 2);
+
+                player.LeaveJail();
+            }
+        }
+
+        public void SendPlayerToJailForThreeDoubles(IPlayer player)
+        {
+            if (player.DoublesCounter == 3)
+            {
+                Console.WriteLine("    Rolled triples three times in a row and is going to jail");
+
+                GoToJail(player);
+            }
+        }
+
+        public void EvaluateRollOutcome(IPlayer player)
         {
             CheckIfPassGo(player);
 
@@ -90,7 +153,7 @@ namespace Monopoly.Game
                 player.Cash -= space.Cost;
                 space.Owner = player;
 
-                Console.WriteLine("{0} purchased \"{1}\" for ${2}.", player.Name, space.Name, space.Cost);
+                Console.WriteLine("    Purchased \"{0}\" for ${1}.", space.Name, space.Cost);
             }
         }
 
@@ -111,14 +174,14 @@ namespace Monopoly.Game
                 buyer.Cash -= rent;
                 owner.Cash += rent;
 
-                Console.WriteLine("{0} paid rent on \"{1}\" to {2} for ${3}.", buyer.Name, spaceName, owner.Name, rent);
+                Console.WriteLine("    Paid rent on \"{0}\" to {1} for ${2}.", spaceName, owner.Name, rent);
             }
             else
             {
                 owner.Cash += buyer.Cash;
                 buyer.Cash = 0;
 
-                Console.WriteLine("{0} loses since they couldn't pay all the rent to {1}", buyer.Name, owner.Name);
+                Console.WriteLine("    Loses since they couldn't pay all the rent to {0}", owner.Name);
             }
         }
 
@@ -183,15 +246,16 @@ namespace Monopoly.Game
             {
                 player.Cash += PASS_GO_REWARD;
 
-                Console.WriteLine("{0} reached \"Go\" and collected ${1}", player.Name, PASS_GO_REWARD);
+                Console.WriteLine("    Reached \"Go\" and collected ${0}", PASS_GO_REWARD);
             }
         }
 
         public void GoToJail(IPlayer player)
         {
             player.CurrentPosition = (int)BoardSpace.SpaceKeys.Jail;
+            player.IsIncarcerated = true;
 
-            Console.Write("{0} landed on \"Go To Jail\"", player.Name);
+            Console.Write("    Is in jail");
         }
 
         public void PayIncomeTax(IPlayer player)
@@ -202,13 +266,13 @@ namespace Monopoly.Game
             {
                 player.Cash -= penalty;
 
-                Console.Write("{0} landed on \"Income Tax\" and paid ${1}", player.Name, penalty);
+                Console.Write("    Landed on \"Income Tax\" and paid ${0}", penalty);
             }
             else
             {
                 player.Cash = 0;
 
-                Console.WriteLine("{0} loses since they couldn't pay their income tax", player.Name);
+                Console.WriteLine("    Loses since they couldn't pay their income tax");
             }
         }
 
@@ -218,19 +282,14 @@ namespace Monopoly.Game
             {
                 player.Cash -= LUXURY_TAX_PENALTY;
 
-                Console.Write("{0} landed on \"Luxury Tax\" and paid ${1}", player.Name, LUXURY_TAX_PENALTY);
+                Console.Write("    Landed on \"Luxury Tax\" and paid ${1}", LUXURY_TAX_PENALTY);
             }
             else
             {
                 player.Cash = 0;
 
-                Console.WriteLine("{0} loses since they couldn't pay their luxury tax", player.Name);
+                Console.WriteLine("    Loses since they couldn't pay their luxury tax");
             }
-        }
-
-        public void PrintTurnSummary(IPlayer player)
-        {
-            Console.WriteLine("At end of round {0}, \"{1}\" rolled a {2} moving to \"{3}\" and has ${4}.", player.RoundsPlayed, player.Name, player.MostRecentRoll, Board.Spaces.ElementAt(player.CurrentPosition).Name, player.Cash);
         }
     }
 }
