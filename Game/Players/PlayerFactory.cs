@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Monopoly.Game.GamePlay;
 using Monopoly.Random;
 
-namespace Monopoly.Game
+namespace Monopoly.Game.Players
 {
     public class PlayerFactory : IPlayerFactory
     {
         public const int MIN_PLAYERS = 2;
         public const int MAX_PLAYERS = 8;
 
-        private readonly IRandomNumberGenerator generator;
+        private readonly IDiceOutcomeHandler diceOutcome;
         private IEnumerable<string> playerNames;
+        private IJail jailCell;
+        private IRandomNumberGenerator generator;
 
-        public PlayerFactory(IEnumerable<string> playerNames, IRandomNumberGenerator generator)
+        public PlayerFactory(IEnumerable<string> playerNames, IDiceOutcomeHandler diceOutcome, IJail jailCell, IRandomNumberGenerator generator)
         {
             this.playerNames = playerNames;
+            this.diceOutcome = diceOutcome;
+            this.jailCell = jailCell;
             this.generator = generator;
         }
 
@@ -25,7 +30,7 @@ namespace Monopoly.Game
 
             playerNames = RandomizePlayerOrder(playerNames);
 
-            IEnumerable<IPlayer> players = playerNames.Select(playerName => new Player(playerName, generator)).ToList();
+            IEnumerable<IPlayer> players = playerNames.Select(playerName => new Player(playerName, jailCell, diceOutcome)).ToList();
 
             return players;
         }

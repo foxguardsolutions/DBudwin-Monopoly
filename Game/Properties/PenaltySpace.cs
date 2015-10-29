@@ -1,4 +1,6 @@
-﻿namespace Monopoly.Game.Properties
+﻿using Monopoly.Game.MonopolyBoard;
+
+namespace Monopoly.Game.Properties
 {
     public class PenaltySpace : BoardSpace
     {

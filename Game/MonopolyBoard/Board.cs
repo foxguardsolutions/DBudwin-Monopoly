@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Monopoly.Game
+namespace Monopoly.Game.MonopolyBoard
 {
     public class Board : IBoard
     {
@@ -14,14 +14,14 @@ namespace Monopoly.Game
             Spaces = spaces;
         }
 
-        public IBoardSpace SpaceAt(int position)
+        public IBoardSpace GetSpaceAt(int position)
         {
             return Spaces.ElementAt(position);
         }
 
-        public IBoardSpace SpaceAt(BoardSpace.SpaceKeys position)
+        public IBoardSpace GetSpaceAt(BoardSpace.SpaceKeys position)
         {
-            return SpaceAt((int)position);
+            return GetSpaceAt((int)position);
         }
     }
 }

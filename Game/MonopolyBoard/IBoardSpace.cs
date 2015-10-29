@@ -1,4 +1,4 @@
-﻿namespace Monopoly.Game
+﻿namespace Monopoly.Game.MonopolyBoard
 {
     public interface IBoardSpace
     {

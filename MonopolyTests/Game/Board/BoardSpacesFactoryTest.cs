@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Monopoly.Game;
+using Monopoly.Game.MonopolyBoard;
 using Ninject;
 using NUnit.Framework;
 
-namespace MonopolyTests
+namespace MonopolyTests.Game.Board
 {
     public class BoardSpacesFactoryTest
     {
@@ -23,7 +24,7 @@ namespace MonopolyTests
         {
             IEnumerable<IBoardSpace> spaces = boardFactory.CreateAll();
 
-            for (int i = 0; i < Board.NUMBER_OF_SPACES; i++)
+            for (int i = 0; i < Monopoly.Game.MonopolyBoard.Board.NUMBER_OF_SPACES; i++)
             {
                 Assert.AreEqual(i, (int)spaces.ElementAt(i).Position);
             }

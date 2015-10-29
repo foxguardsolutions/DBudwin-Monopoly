@@ -1,9 +1,10 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
 using Monopoly.Game;
-using System.Linq;
+using Monopoly.Game.MonopolyBoard;
 using Ninject;
+using NUnit.Framework;
 
-namespace MonopolyTests
+namespace MonopolyTests.Game.Board
 {
     [TestFixture]
     public class BoardTest
@@ -20,7 +21,7 @@ namespace MonopolyTests
         [Test(Description = "Make sure spaces are created and sorted in the right order via the Ninject bindings")]
         public void TestCreateBoard()
         {
-            for (int i = 0; i < Board.NUMBER_OF_SPACES; i++)
+            for (int i = 0; i < Monopoly.Game.MonopolyBoard.Board.NUMBER_OF_SPACES; i++)
             {
                 Assert.AreEqual(i, (int)board.Spaces.ElementAt(i).Position);
             }
