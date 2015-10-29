@@ -12,9 +12,11 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -52,14 +54,6 @@
       <HintPath>..\packages\AutoFixture.3.36.8\lib\net40\Ploeh.AutoFixture.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StyleCop, Version=4.7.1000.0, Culture=neutral, PublicKeyToken=f904653c63bc2738, processorArchitecture=MSIL">
-      <HintPath>..\packages\StyleCop.4.7.49.0\lib\net35\StyleCop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StyleCop.CSharp, Version=4.7.1000.0, Culture=neutral, PublicKeyToken=f904653c63bc2738, processorArchitecture=MSIL">
-      <HintPath>..\packages\StyleCop.4.7.49.0\lib\net35\StyleCop.CSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -70,14 +64,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoardTest.cs" />
-    <Compile Include="MonopolyGameTest.cs" />
-    <Compile Include="PlayerFactoryTest.cs" />
-    <Compile Include="PlayerTest.cs" />
+    <Compile Include="Game\Bank\BankerTest.cs" />
+    <Compile Include="Game\Board\BoardTest.cs" />
+    <Compile Include="Game\GamePlay\DiceOutcomeHandlerTest.cs" />
+    <Compile Include="Game\GamePlay\DiceTest.cs" />
+    <Compile Include="Game\GamePlay\JailTest.cs" />
+    <Compile Include="Game\MonopolyGameTest.cs" />
+    <Compile Include="Game\Player\PlayerFactoryTest.cs" />
+    <Compile Include="Game\Player\PlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyGroupTest.cs" />
-    <Compile Include="RandomNumberGeneratorTest.cs" />
-    <Compile Include="BoardSpacesFactoryTest.cs" />
+    <Compile Include="Game\Properties\PropertyActionsTest.cs" />
+    <Compile Include="Game\Properties\PropertyGroupTest.cs" />
+    <Compile Include="Random\RandomNumberGeneratorTest.cs" />
+    <Compile Include="Game\Board\BoardSpacesFactoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

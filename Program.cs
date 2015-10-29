@@ -1,5 +1,7 @@
 ﻿using System;
 using Monopoly.Game;
+using Monopoly.Game.Bank;
+using Monopoly.Game.GamePlay;
 using Ninject;
 
 namespace Monopoly
@@ -13,6 +15,9 @@ namespace Monopoly
             using (var kernel = new StandardKernel(new MonopolyBindings(args)))
             {
                 MonopolyGame game = kernel.Get<MonopolyGame>();
+
+                game.Banker = kernel.Get<Banker>();
+                game.Dice = kernel.Get<Dice>();
 
                 BeginGamePlay(game);
             }

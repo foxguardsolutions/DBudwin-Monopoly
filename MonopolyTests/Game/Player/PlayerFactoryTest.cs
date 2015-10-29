@@ -2,11 +2,12 @@
 using System.Linq;
 using Monopoly.Game;
 using Ninject;
+using NUnit.Framework;
+using Monopoly.Game.Players;
 
-namespace MonopolyTests
+namespace MonopolyTests.Game.Player
 {
-    using NUnit.Framework;
-
+    [TestFixture]
     public class PlayerFactoryTest
     {
         private IPlayerFactory factory;

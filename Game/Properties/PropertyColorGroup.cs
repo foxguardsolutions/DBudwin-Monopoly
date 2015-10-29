@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Monopoly.Game.MonopolyBoard;
 
 namespace Monopoly.Game.Properties
 {
-    public class PropertyGroup : IPropertyGroup
+    public class PropertyColorGroup
     {
         public enum Groups
         {
