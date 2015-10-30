@@ -84,7 +84,9 @@
     <Compile Include="Game\PlayerFactory.cs" />
     <Compile Include="Game\Properties\ActionSpace.cs" />
     <Compile Include="Game\Properties\CardSpace.cs" />
+    <Compile Include="Game\Properties\IPropertyGroup.cs" />
     <Compile Include="Game\Properties\PenaltySpace.cs" />
+    <Compile Include="Game\Properties\PropertyGroup.cs" />
     <Compile Include="Game\Properties\PropertySpace.cs" />
     <Compile Include="Game\Properties\RailRoadSpace.cs" />
     <Compile Include="Game\Properties\RealEstateSpace.cs" />

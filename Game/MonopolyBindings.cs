@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Monopoly.Game.Properties;
 using Monopoly.Random;
 using Ninject;
 using Ninject.Modules;

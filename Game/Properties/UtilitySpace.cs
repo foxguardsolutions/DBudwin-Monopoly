@@ -2,8 +2,8 @@
 {
     public class UtilitySpace : RealEstateSpace
     {
-        public UtilitySpace(string name, SpaceKeys position, int cost = 150)
-            : base(name, position, cost)
+        public UtilitySpace(string name, SpaceKeys position, PropertyGroup.Groups group, int cost, int rent)
+            : base(name, position, group, cost, rent)
         {
         }
     }

@@ -1,9 +1,9 @@
 ﻿namespace Monopoly.Game.Properties
 {
-    public class RailRoadSpace : RealEstateSpace
+    public class RailroadSpace : RealEstateSpace
     {
-        public RailRoadSpace(string name, SpaceKeys position, int cost = 200)
-            : base(name, position, cost)
+        public RailroadSpace(string name, SpaceKeys position, PropertyGroup.Groups group, int cost, int rent)
+            : base(name, position, group, cost, rent)
         {
         }
     }

@@ -9,6 +9,7 @@ namespace Monopoly.Game
         string Name { get; }
         int CurrentPosition { get; set; }
         int PreviousPosition { get; set; }
+        int MostRecentRoll { get; set; }
         int Cash { get; set; }
 
         void TakeTurn(int rollValue);
