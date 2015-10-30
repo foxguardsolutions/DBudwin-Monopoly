@@ -1,4 +1,7 @@
-﻿namespace Monopoly
+﻿using Monopoly.Game;
+using Monopoly.Random;
+
+namespace MonopolyTests
 {
     using Moq;
     using NUnit.Framework;

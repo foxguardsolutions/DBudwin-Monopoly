@@ -1,30 +1,25 @@
 ﻿using System;
+using Monopoly.Game;
+using Ninject;
 
 namespace Monopoly
 {
     public static class Program
     {
+        public const int ROUNDS_TO_PLAY = 20;
+
         public static void Main(string[] args)
         {
-            if (args.Length < 3)
+            using (var kernel = new StandardKernel(new MonopolyBindings(args)))
             {
-                ShowUsage();
-            }
-            else
-            {
-                BeginGamePlay(args);
+                MonopolyGame game = kernel.Get<MonopolyGame>();
+
+                BeginGamePlay(game);
             }
         }
 
-        private static void ShowUsage()
+        private static void BeginGamePlay(MonopolyGame game)
         {
-            Console.WriteLine("To play Monopoly, enter a space delimited list of at least 2 player names followed by the number of rounds to play.");
-        }
-
-        private static void BeginGamePlay(string[] args)
-        {
-            MonopolyGame game = new MonopolyGame(args);
-
             RunGame(game);
 
             Console.ReadLine();
@@ -32,7 +27,7 @@ namespace Monopoly
 
         private static void RunGame(MonopolyGame game)
         {
-            for (int i = 0; i < game.RoundsToPlay; i++)
+            for (int i = 0; i < ROUNDS_TO_PLAY; i++)
             {
                 game.PlayRound();
             }

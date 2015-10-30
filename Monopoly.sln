@@ -5,16 +5,30 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monopoly", "Monopoly.csproj", "{457010F2-7EF5-4E67-8B7B-3FD5CC1BDED9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonopolyTests", "MonopolyTests\MonopolyTests.csproj", "{E331DCE3-8692-44C6-8463-8D3C5DCF44E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{457010F2-7EF5-4E67-8B7B-3FD5CC1BDED9}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{457010F2-7EF5-4E67-8B7B-3FD5CC1BDED9}.Debug|x86.ActiveCfg = Debug|x86
 		{457010F2-7EF5-4E67-8B7B-3FD5CC1BDED9}.Debug|x86.Build.0 = Debug|x86
+		{457010F2-7EF5-4E67-8B7B-3FD5CC1BDED9}.Release|Any CPU.ActiveCfg = Release|x86
 		{457010F2-7EF5-4E67-8B7B-3FD5CC1BDED9}.Release|x86.ActiveCfg = Release|x86
 		{457010F2-7EF5-4E67-8B7B-3FD5CC1BDED9}.Release|x86.Build.0 = Release|x86
+		{E331DCE3-8692-44C6-8463-8D3C5DCF44E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E331DCE3-8692-44C6-8463-8D3C5DCF44E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E331DCE3-8692-44C6-8463-8D3C5DCF44E6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E331DCE3-8692-44C6-8463-8D3C5DCF44E6}.Debug|x86.Build.0 = Debug|Any CPU
+		{E331DCE3-8692-44C6-8463-8D3C5DCF44E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E331DCE3-8692-44C6-8463-8D3C5DCF44E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E331DCE3-8692-44C6-8463-8D3C5DCF44E6}.Release|x86.ActiveCfg = Release|Any CPU
+		{E331DCE3-8692-44C6-8463-8D3C5DCF44E6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

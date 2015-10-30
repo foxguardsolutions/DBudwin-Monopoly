@@ -1,8 +1,8 @@
-﻿namespace Monopoly
+﻿namespace Monopoly.Game.Properties
 {
     public class CardSpace : BoardSpace
     {
-        public CardSpace(string name, int position)
+        public CardSpace(string name, SpaceKeys position)
         {
             Name = name;
             Position = position;

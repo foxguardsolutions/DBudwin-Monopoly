@@ -1,4 +1,4 @@
-﻿namespace Monopoly
+﻿namespace Monopoly.Random
 {
     public interface IRandomNumberGenerator
     {

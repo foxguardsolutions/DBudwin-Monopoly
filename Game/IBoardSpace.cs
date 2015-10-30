@@ -1,8 +1,8 @@
-﻿namespace Monopoly
+﻿namespace Monopoly.Game
 {
     public interface IBoardSpace
     {
         string Name { get; set; }
-        int Position { get; set; }
+        BoardSpace.SpaceKeys Position { get; set; }
     }
 }

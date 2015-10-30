@@ -1,8 +1,8 @@
-﻿namespace Monopoly
+﻿namespace Monopoly.Game.Properties
 {
     public class UtilitySpace : RealEstateSpace
     {
-        public UtilitySpace(string name, int position, int cost = 150)
+        public UtilitySpace(string name, SpaceKeys position, int cost = 150)
             : base(name, position, cost)
         {
         }
