@@ -1,11 +1,11 @@
-﻿using Monopoly.Game;
+﻿using Monopoly.Game.GamePlay;
 using Monopoly.Random;
+using Moq;
+using NUnit.Framework;
 
-namespace MonopolyTests
+namespace MonopolyTests.Random
 {
-    using Moq;
-    using NUnit.Framework;
-
+    [TestFixture]
     public class RandomNumberGeneratorTest
     {
         [TestCase(1, Result = 1)]
@@ -13,9 +13,9 @@ namespace MonopolyTests
         public int TestGenerate(int expected)
         {
             Mock<IRandomNumberGenerator> mock = new Mock<IRandomNumberGenerator>();
-            mock.Setup(s => s.Generate(1, MonopolyGame.NUMBER_OF_SIDES)).Returns(expected);
+            mock.Setup(s => s.Generate(1, Dice.NUMBER_OF_SIDES)).Returns(expected);
 
-            return mock.Object.Generate(1, MonopolyGame.NUMBER_OF_SIDES);
+            return mock.Object.Generate(1, Dice.NUMBER_OF_SIDES);
         }
     }
 }

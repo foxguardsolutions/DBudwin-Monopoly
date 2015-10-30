@@ -1,19 +1,17 @@
-﻿using Monopoly.Random;
+﻿using Monopoly.Game.GamePlay;
 
-namespace Monopoly.Game
+namespace Monopoly.Game.Players
 {
     public interface IPlayer
     {
-        int RoundsPlayed { get; }
-        IRandomNumberGenerator Generator { get; }
+        IJail JailCell { get; }
+        IDiceOutcomeHandler DiceOutcome { get; set; }
         string Name { get; }
         int CurrentPosition { get; set; }
         int PreviousPosition { get; set; }
-        int MostRecentRoll { get; set; }
         int Cash { get; set; }
-
         void TakeTurn(int rollValue);
-        int RollDie();
-        int RollDice();
+        void GoToJail();
+        bool IsInJail();
     }
 }
