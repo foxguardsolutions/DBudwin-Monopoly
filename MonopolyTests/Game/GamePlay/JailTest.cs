@@ -1,11 +1,10 @@
 ﻿using System.Linq;
-using Moq;
-using Ninject;
-using NUnit.Framework;
-using Monopoly.Game.Bank;
 using Monopoly.Game;
 using Monopoly.Game.GamePlay;
 using Monopoly.Game.Players;
+using Moq;
+using Ninject;
+using NUnit.Framework;
 
 namespace MonopolyTests.Game.GamePlay
 {
@@ -23,12 +22,10 @@ namespace MonopolyTests.Game.GamePlay
             using (var kernel = new StandardKernel(new MonopolyBindings(names)))
             {
                 game = kernel.Get<IMonopolyGame>();
-
-                game.Banker = kernel.Get<IBanker>();
                 game.Dice = kernel.Get<IDice>();
             }
 
-            player = game.Players.First();
+            player = game.Players.AllPlayers.First();
         }
 
         [TestCase(Description = "User Story: Roll doubles 3 times in a row, never pass or land on go. Balance is unchanged. Player is in Jail.")]

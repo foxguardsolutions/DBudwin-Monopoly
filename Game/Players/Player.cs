@@ -63,6 +63,11 @@ namespace Monopoly.Game.Players
             JailCell.GoToJail(this);
         }
 
+        public void LeaveJail()
+        {
+            JailCell.LeaveJail(this);
+        }
+
         public bool IsInJail()
         {
             return JailCell.IsPlayerInJail(this);

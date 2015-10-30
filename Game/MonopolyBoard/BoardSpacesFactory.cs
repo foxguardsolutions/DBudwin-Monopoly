@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Monopoly.Game.Properties;
 
@@ -7,6 +8,14 @@ namespace Monopoly.Game.MonopolyBoard
     public class BoardSpacesFactory : IBoardSpacesFactory
     {
         private List<BoardSpace> spaces = new List<BoardSpace>();
+        private IPropertySpaceActions propertyActions;
+        private ICardSpaceActions cardActions;
+
+        public BoardSpacesFactory(IPropertySpaceActions propertyActions, ICardSpaceActions cardActions)
+        {
+            this.propertyActions = propertyActions;
+            this.cardActions = cardActions;
+        }
 
         public IEnumerable<IBoardSpace> CreateAll()
         {
@@ -18,7 +27,7 @@ namespace Monopoly.Game.MonopolyBoard
         private void CreateBoardSpaces()
         {
             CreateRailRoadSpaces();
-            CreateActionSpaces();
+            CreateCornerSpaces();
             CreateCardSpaces();
             CreateUtilitySpaces();
             CreatePropertySpaces();
@@ -35,22 +44,22 @@ namespace Monopoly.Game.MonopolyBoard
             spaces.Add(new RailroadSpace("Short Line", BoardSpace.SpaceKeys.ShortLine, PropertyColorGroup.Groups.Railroads, 150, 25));
         }
 
-        private void CreateActionSpaces()
+        private void CreateCornerSpaces()
         {
-            spaces.Add(new ActionSpace("Go", BoardSpace.SpaceKeys.Go));
-            spaces.Add(new ActionSpace("Jail", BoardSpace.SpaceKeys.Jail));
-            spaces.Add(new ActionSpace("Free Parking", BoardSpace.SpaceKeys.FreeParking));
-            spaces.Add(new ActionSpace("Go To Jail", BoardSpace.SpaceKeys.GoToJail));
+            spaces.Add(new CornerSpace("Go", propertyActions.CheckIfPassGo, BoardSpace.SpaceKeys.Go));
+            spaces.Add(new CornerSpace("Jail", propertyActions.EmptyAction, BoardSpace.SpaceKeys.Jail));
+            spaces.Add(new CornerSpace("Free Parking", propertyActions.EmptyAction, BoardSpace.SpaceKeys.FreeParking));
+            spaces.Add(new CornerSpace("Go To Jail", propertyActions.GoToJail, BoardSpace.SpaceKeys.GoToJail));
         }
 
         private void CreateCardSpaces()
         {
-            spaces.Add(new CardSpace("Community Chest", BoardSpace.SpaceKeys.CC1));
-            spaces.Add(new CardSpace("Chance", BoardSpace.SpaceKeys.Chance1));
-            spaces.Add(new CardSpace("Community Chest", BoardSpace.SpaceKeys.CC2));
-            spaces.Add(new CardSpace("Chance", BoardSpace.SpaceKeys.Chance2));
-            spaces.Add(new CardSpace("Community Chest", BoardSpace.SpaceKeys.CC3));
-            spaces.Add(new CardSpace("Chance", BoardSpace.SpaceKeys.Chance3));
+            spaces.Add(new CardSpace("Community Chest", cardActions.DrawCommunityChestCard, BoardSpace.SpaceKeys.CC1));
+            spaces.Add(new CardSpace("Chance", cardActions.DrawChanceCard, BoardSpace.SpaceKeys.Chance1));
+            spaces.Add(new CardSpace("Community Chest", cardActions.DrawCommunityChestCard, BoardSpace.SpaceKeys.CC2));
+            spaces.Add(new CardSpace("Chance", cardActions.DrawChanceCard, BoardSpace.SpaceKeys.Chance2));
+            spaces.Add(new CardSpace("Community Chest", cardActions.DrawCommunityChestCard, BoardSpace.SpaceKeys.CC3));
+            spaces.Add(new CardSpace("Chance", cardActions.DrawChanceCard, BoardSpace.SpaceKeys.Chance3));
         }
 
         private void CreateUtilitySpaces()
@@ -87,8 +96,8 @@ namespace Monopoly.Game.MonopolyBoard
 
         private void CreatePenaltySpaces()
         {
-            spaces.Add(new PenaltySpace("Income Tax", BoardSpace.SpaceKeys.IncomeTax, 200));
-            spaces.Add(new PenaltySpace("Luxury Tax", BoardSpace.SpaceKeys.LuxuryTax, 75));
+            spaces.Add(new PenaltySpace("Income Tax", propertyActions.PayIncomeTax, BoardSpace.SpaceKeys.IncomeTax, 200));
+            spaces.Add(new PenaltySpace("Luxury Tax", propertyActions.PayLuxuryTax, BoardSpace.SpaceKeys.LuxuryTax, 75));
         }
     }
 }

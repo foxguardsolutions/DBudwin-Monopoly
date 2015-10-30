@@ -1,16 +1,14 @@
 ﻿using System.Linq;
-using Moq;
-using Ninject;
 using Monopoly.Game;
-using Monopoly.Game.Bank;
 using Monopoly.Game.GamePlay;
 using Monopoly.Game.Players;
 using Monopoly.Random;
+using Moq;
+using Ninject;
+using NUnit.Framework;
 
 namespace MonopolyTests.Game
 {
-    using NUnit.Framework;
-
     [TestFixture]
     public class MonopolyGameTest
     {
@@ -25,7 +23,7 @@ namespace MonopolyTests.Game
 
             CreateGame("Car,Horse");
 
-            player = game.Players.First();
+            player = game.Players.AllPlayers.First();
         }
 
         public void RollDiceMock(int die1, int die2)
@@ -34,14 +32,12 @@ namespace MonopolyTests.Game
         }
 
         public void CreateGame(string args)
-        {            
+        {
             string[] names = args.Split(',');
 
             using (var kernel = new StandardKernel(new MonopolyBindings(names)))
             {
                 game = kernel.Get<IMonopolyGame>();
-
-                game.Banker = kernel.Get<IBanker>();
                 game.Dice = kernel.Get<IDice>();
             }
         }
@@ -53,25 +49,25 @@ namespace MonopolyTests.Game
         {
             CreateGame(args);
 
-            return game.Players.Count();
+            return game.Players.AllPlayers.Count();
         }
 
         [TestCase(Description = "User Story: Make sure the order of the players remains constant")]
         public void TestPlayerOrderIsConsistent()
         {
-            IPlayer player1 = game.Players.ElementAt(0);
-            IPlayer player2 = game.Players.ElementAt(1);
+            IPlayer player1 = game.Players.AllPlayers.ElementAt(0);
+            IPlayer player2 = game.Players.AllPlayers.ElementAt(1);
 
             for (int i = 0; i < 20; i++)
             {
                 game.PlayRound();
 
-                Assert.AreEqual(player1.Name, game.Players.ElementAt(0).Name);
-                Assert.AreEqual(player2.Name, game.Players.ElementAt(1).Name);
+                Assert.AreEqual(player1.Name, game.Players.AllPlayers.ElementAt(0).Name);
+                Assert.AreEqual(player2.Name, game.Players.AllPlayers.ElementAt(1).Name);
             }
         }
 
-        [TestCase(34, 8, Result = 600, Description = "Test passing Go")]
+        [TestCase(34, 10, Result = 480, Description = "Test passing Go and landing on income tax")]
         [TestCase(38, 2, Result = 600, Description = "Test landing on Go")]
         [TestCase(10, 8, Result = 220, Description = "Test not passing Go")]
         public int TestCheckIfPassGo(int position, int roll)
@@ -80,7 +76,7 @@ namespace MonopolyTests.Game
 
             player.TakeTurn(roll);
 
-            game.EvaluateRollOutcome(player);
+            game.Manager.EvaluateBoardSpaceOutcome(player);
 
             return player.Cash;
         }
@@ -92,7 +88,7 @@ namespace MonopolyTests.Game
             player.Cash = cash;
             player.TakeTurn(roll);
 
-            game.EvaluateRollOutcome(player);
+            game.Manager.EvaluateBoardSpaceOutcome(player);
 
             return player.Cash;
         }
@@ -105,7 +101,7 @@ namespace MonopolyTests.Game
             player.Cash = cash;
             player.TakeTurn(roll);
 
-            game.EvaluateRollOutcome(player);
+            game.Manager.EvaluateBoardSpaceOutcome(player);
 
             return player.Cash;
         }

@@ -33,7 +33,7 @@ namespace Monopoly.Game.Bank
             }
             else
             {
-                Console.WriteLine("    {0} loses since they couldn't pay {1}.  {2}", player.Name, amount, message);
+                Console.WriteLine("    {0} loses since they couldn't pay ${1}.  {2}", player.Name, amount, message);
             }
         }
     }

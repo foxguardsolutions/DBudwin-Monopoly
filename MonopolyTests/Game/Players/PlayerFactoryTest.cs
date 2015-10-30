@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Monopoly.Game;
+using Monopoly.Game.Players;
 using Ninject;
 using NUnit.Framework;
-using Monopoly.Game.Players;
 
-namespace MonopolyTests.Game.Player
+namespace MonopolyTests.Game.Players
 {
     [TestFixture]
     public class PlayerFactoryTest

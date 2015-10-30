@@ -7,12 +7,12 @@ using Monopoly.Game.Players;
 
 namespace Monopoly.Game.Properties
 {
-    public class PropertyManager : IPropertyManager
+    public class BoardManager : IBoardManager
     {
         public IBoard Board { get; }
         private IBanker banker;
 
-        public PropertyManager(IBoard board, IBanker banker)
+        public BoardManager(IBoard board, IBanker banker)
         {
             Board = board;
             this.banker = banker;
@@ -122,6 +122,27 @@ namespace Monopoly.Game.Properties
             int currentRent = space.Rent;
 
             return properties.All(property => property.Owner == space.Owner) ? currentRent * 2 : currentRent;
+        }
+
+        public void EvaluateBoardSpaceOutcome(IPlayer player)
+        {
+            IBoardSpace currentSpace = Board.GetSpaceAt(player.CurrentPosition);
+
+            IActionSpace actionSpace = currentSpace as IActionSpace;
+
+            if (actionSpace != null)
+            {
+                actionSpace.SpaceAction.Invoke(player);
+
+                ICardSpaceActions cardSpace = actionSpace as ICardSpaceActions;
+
+                if (cardSpace != null)
+                {
+                    EvaluateBoardSpaceOutcome(player);
+                }
+            }
+
+            CheckPlayersCurrentSpaceAvailability(player);
         }
     }
 }

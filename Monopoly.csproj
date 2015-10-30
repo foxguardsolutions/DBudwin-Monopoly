@@ -11,6 +11,8 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,12 +42,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <HintPath>packages\Ninject.3.2.3-unstable-012\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -67,16 +69,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="packages\StyleCop.Analyzers.1.0.0-beta013\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
-    <Analyzer Include="packages\StyleCop.Analyzers.1.0.0-beta013\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Game\Bank\Banker.cs" />
     <Compile Include="Game\Bank\IBanker.cs" />
+    <Compile Include="Game\Cards\CardActions.cs" />
+    <Compile Include="Game\Cards\CardFactory.cs" />
+    <Compile Include="Game\Cards\CardManager.cs" />
+    <Compile Include="Game\Cards\Card.cs" />
+    <Compile Include="Game\Cards\ICard.cs" />
+    <Compile Include="Game\Cards\ICardActions.cs" />
+    <Compile Include="Game\Cards\ICardFactory.cs" />
+    <Compile Include="Game\Cards\ICardManager.cs" />
+    <Compile Include="Game\Cards\IChanceCard.cs" />
+    <Compile Include="Game\Cards\ICommunityChestCard.cs" />
     <Compile Include="Game\GamePlay\DiceOutcomeHandler.cs" />
     <Compile Include="Game\GamePlay\IDiceOutcomeHandler.cs" />
     <Compile Include="Game\MonopolyBoard\Board.cs" />
     <Compile Include="Game\MonopolyBoard\BoardSpace.cs" />
+    <Compile Include="Game\MonopolyBoard\CardSpaceActions.cs" />
+    <Compile Include="Game\MonopolyBoard\ICardSpaceActions.cs" />
+    <Compile Include="Game\MonopolyBoard\PropertySpaceActions.cs" />
     <Compile Include="Game\MonopolyBoard\BoardSpacesFactory.cs" />
     <Compile Include="Game\GamePlay\Dice.cs" />
     <Compile Include="Game\GamePlay\IDice.cs" />
@@ -84,17 +95,21 @@
     <Compile Include="Game\GamePlay\Jail.cs" />
     <Compile Include="Game\MonopolyBoard\IBoard.cs" />
     <Compile Include="Game\MonopolyBoard\IBoardSpace.cs" />
+    <Compile Include="Game\MonopolyBoard\IPropertySpaceActions.cs" />
     <Compile Include="Game\MonopolyBoard\IBoardSpacesFactory.cs" />
     <Compile Include="Game\IMonopolyGame.cs" />
     <Compile Include="Game\Players\IPlayer.cs" />
     <Compile Include="Game\Players\IPlayerFactory.cs" />
-    <Compile Include="Game\Properties\IPropertyManager.cs" />
+    <Compile Include="Game\Players\IGamePlayers.cs" />
+    <Compile Include="Game\Players\GamePlayers.cs" />
+    <Compile Include="Game\Properties\IActionSpace.cs" />
+    <Compile Include="Game\MonopolyBoard\IBoardManager.cs" />
     <Compile Include="Game\Players\Player.cs" />
     <Compile Include="Game\Players\PlayerFactory.cs" />
-    <Compile Include="Game\Properties\ActionSpace.cs" />
+    <Compile Include="Game\Properties\CornerSpace.cs" />
     <Compile Include="Game\Properties\CardSpace.cs" />
     <Compile Include="Game\Properties\PenaltySpace.cs" />
-    <Compile Include="Game\Properties\PropertyManager.cs" />
+    <Compile Include="Game\MonopolyBoard\BoardManager.cs" />
     <Compile Include="Game\Properties\PropertyColorGroup.cs" />
     <Compile Include="Game\Properties\PropertySpace.cs" />
     <Compile Include="Game\Properties\RailRoadSpace.cs" />
@@ -109,8 +124,20 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="packages\StyleCop.Analyzers.1.0.0-beta015\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="packages\StyleCop.Analyzers.1.0.0-beta015\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="packages\StyleCop.Analyzers.1.0.0-beta015\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
+  <Import Project="packages\StyleCop.Analyzers.1.0.0-beta015\build\StyleCop.Analyzers.targets" Condition="Exists('packages\StyleCop.Analyzers.1.0.0-beta015\build\StyleCop.Analyzers.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\StyleCop.Analyzers.1.0.0-beta015\build\StyleCop.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\StyleCop.Analyzers.1.0.0-beta015\build\StyleCop.Analyzers.targets'))" />
+  </Target>
 </Project>

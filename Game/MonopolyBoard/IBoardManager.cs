@@ -3,7 +3,7 @@ using Monopoly.Game.Players;
 
 namespace Monopoly.Game.Properties
 {
-    public interface IPropertyManager
+    public interface IBoardManager
     {
         IBoard Board { get; }
 
@@ -15,5 +15,6 @@ namespace Monopoly.Game.Properties
         int DetermineUtilityRent(int rollValue);
         int DetermineRailroadRent(RailroadSpace space, int numberOfOwnedRailroads);
         int DeterminePropertyRent(PropertySpace space);
+        void EvaluateBoardSpaceOutcome(IPlayer player);
     }
 }

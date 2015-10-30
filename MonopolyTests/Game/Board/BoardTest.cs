@@ -14,7 +14,7 @@ namespace MonopolyTests.Game.Board
         [SetUp]
         public void SetUp()
         {
-            IKernel kernel = new StandardKernel(new MonopolyBindings(new string[] {"Car", "Horse"}));
+            IKernel kernel = new StandardKernel(new MonopolyBindings(new string[] { "Car", "Horse" }));
             board = kernel.Get<IBoard>();
         }
 

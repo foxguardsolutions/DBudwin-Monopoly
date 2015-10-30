@@ -1,23 +1,20 @@
 ﻿using Monopoly.Game;
 using Monopoly.Game.GamePlay;
+using Monopoly.Game.Players;
 using Ninject;
+using NUnit.Framework;
 
-namespace MonopolyTests.Game.Player
+namespace MonopolyTests.Game.Players
 {
-    using Monopoly.Game.Players;
-    using Moq;
-    using NUnit.Framework;
-
     [TestFixture]
     public class PlayerTest
     {
-        private Mock<IDice> diceMock;
         private IPlayer player;
 
         [SetUp]
         public void SetUp()
         {
-            string[] names = {"Car"};
+            string[] names = { "Car" };
 
             using (var kernel = new StandardKernel(new MonopolyBindings(names)))
             {

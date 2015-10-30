@@ -14,7 +14,7 @@ namespace MonopolyTests.Game.GamePlay
         [SetUp]
         public void SetUp()
         {
-            string[] names = {"Car", "Horse"};
+            string[] names = { "Car", "Horse" };
 
             using (var kernel = new StandardKernel(new MonopolyBindings(names)))
             {

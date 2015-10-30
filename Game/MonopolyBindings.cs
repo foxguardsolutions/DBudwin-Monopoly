@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Monopoly.Game.Bank;
+using Monopoly.Game.Cards;
 using Monopoly.Game.GamePlay;
 using Monopoly.Game.MonopolyBoard;
 using Monopoly.Game.Players;
@@ -21,17 +22,23 @@ namespace Monopoly.Game
 
         public override void Load()
         {
-            Bind<IBoard>().To<Board>().WithConstructorArgument(typeof(IEnumerable<IBoardSpace>), context => context.Kernel.Get<IBoardSpacesFactory>().CreateAll());
-            Bind<IPlayerFactory>().To<PlayerFactory>().WithConstructorArgument(playerNames);
-            Bind<IBoardSpacesFactory>().To<BoardSpacesFactory>();
-            Bind<IRandomNumberGenerator>().To<RandomNumberGenerator>();
-            Bind<IEnumerable<IPlayer>>().ToMethod(context => context.Kernel.Get<IPlayerFactory>().CreateAll()).InSingletonScope();
-            Bind<IMonopolyGame>().To<MonopolyGame>().WithConstructorArgument(typeof(IEnumerable<IPlayer>), context => context.Kernel.Get<IPlayerFactory>().CreateAll());
-            Bind<IPropertyManager>().To<PropertyManager>().WithConstructorArgument(typeof(IBoard), context => context.Kernel.Get<IBoard>()).WithConstructorArgument(typeof(IBanker), context => context.Kernel.Get<IBanker>());
-            Bind<IBanker>().To<Banker>();
-            Bind<IDice>().To<Dice>();
-            Bind<IJail>().To<Jail>();
-            Bind<IDiceOutcomeHandler>().To<DiceOutcomeHandler>();
+            Bind<IPlayerFactory>().To<PlayerFactory>().InSingletonScope().WithConstructorArgument(playerNames);
+            Bind<IBoardSpacesFactory>().To<BoardSpacesFactory>().InSingletonScope();
+            Bind<IBoard>().ToMethod(c => new Board(c.Kernel.Get<IBoardSpacesFactory>().CreateAll())).InSingletonScope();
+            Bind<IRandomNumberGenerator>().To<RandomNumberGenerator>().InSingletonScope();
+            Bind<IMonopolyGame>().To<MonopolyGame>().InSingletonScope();
+            Bind<IGamePlayers>().To<GamePlayers>().InSingletonScope();
+            Bind<IBoardManager>().To<BoardManager>().InSingletonScope();
+            Bind<IBanker>().To<Banker>().InSingletonScope();
+            Bind<IDice>().To<Dice>().InSingletonScope();
+            Bind<IJail>().To<Jail>().InSingletonScope();
+            Bind<IDiceOutcomeHandler>().To<DiceOutcomeHandler>().InSingletonScope();
+            Bind<ICardManager<ICommunityChestCard>>().ToMethod(c => new CardManager<ICommunityChestCard>(c.Kernel.Get<ICardFactory>().CreateCommunityChestCards())).InSingletonScope();
+            Bind<ICardManager<IChanceCard>>().ToMethod(c => new CardManager<IChanceCard>(c.Kernel.Get<ICardFactory>().CreateChanceCards())).InSingletonScope();
+            Bind<IPropertySpaceActions>().To<PropertySpaceActions>().InSingletonScope();
+            Bind<ICardSpaceActions>().To<CardSpaceActions>().InSingletonScope();
+            Bind<ICardActions>().To<CardActions>().InSingletonScope();
+            Bind<ICardFactory>().To<CardFactory>().InSingletonScope();
         }
     }
 }

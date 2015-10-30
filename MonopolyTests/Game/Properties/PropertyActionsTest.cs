@@ -1,22 +1,20 @@
 ﻿using System.Linq;
-using Ninject;
 using Monopoly.Game;
-using Monopoly.Game.Bank;
 using Monopoly.Game.GamePlay;
 using Monopoly.Game.MonopolyBoard;
 using Monopoly.Game.Players;
 using Monopoly.Game.Properties;
+using Moq;
+using Ninject;
+using NUnit.Framework;
 
 namespace MonopolyTests.Game.Properties
 {
-    using Moq;
-    using NUnit.Framework;
-
     [TestFixture]
     public class PropertyActionsTest
     {
         private IMonopolyGame game;
-        private IPropertyManager manager;
+        private IBoardManager manager;
         private IBoard board;
         private IPlayer player;
         private IPlayer ownerPlayer;
@@ -29,8 +27,6 @@ namespace MonopolyTests.Game.Properties
             using (var kernel = new StandardKernel(new MonopolyBindings(names)))
             {
                 game = kernel.Get<IMonopolyGame>();
-
-                game.Banker = kernel.Get<IBanker>();
                 game.Dice = kernel.Get<IDice>();
             }
         }
@@ -42,8 +38,8 @@ namespace MonopolyTests.Game.Properties
 
             manager = game.Manager;
             board = manager.Board;
-            player = game.Players.First();
-            ownerPlayer = game.Players.Last();
+            player = game.Players.AllPlayers.First();
+            ownerPlayer = game.Players.AllPlayers.Last();
         }
 
         private RealEstateSpace PurchaseProperty(BoardSpace.SpaceKeys space)

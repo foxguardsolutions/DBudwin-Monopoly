@@ -12,6 +12,7 @@ namespace Monopoly.Game.Players
         int Cash { get; set; }
         void TakeTurn(int rollValue);
         void GoToJail();
+        void LeaveJail();
         bool IsInJail();
     }
 }
